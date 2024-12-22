@@ -1,7 +1,6 @@
 <!-- App.vue -->
 <template>
   <div id="app">
-    <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
     <!-- 动态加载路由匹配的组件 -->
     <router-view />
   </div>

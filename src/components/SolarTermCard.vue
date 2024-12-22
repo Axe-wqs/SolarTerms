@@ -8,6 +8,7 @@
 </template>
 
 <script>
+//`props`：在这个组件中，`term` 是一个属性（prop），它接收父组件传递的数据（在本例中是每个节气的数据）。`required: true` 表示该属性是必传的，父组件必须传递该属性
 export default {
     props: {
         term: {
@@ -17,11 +18,11 @@ export default {
     },
     methods: {
         goToDetail(){
+          //`params` 用于向目标路由传递动态参数，允许我们在不同的页面之间传递数据
             this.$router.push({name:'SolarTerm',params:{id:this.term.id}})
         }
     },
 }
-
 </script>
 
 <style scoped>

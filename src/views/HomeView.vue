@@ -17,9 +17,12 @@ import SolarTermCard from '@/components/SolarTermCard.vue';
 
 export default {
     name: 'HomeView',
+    //components 是注册的意思
+
     components: {
         SolarTermCard
     },
+    // 似乎拿到了src/store/index.js这里写的数组
     computed: {
         solarTerms() {
             return this.$store.state.solarTerms;
