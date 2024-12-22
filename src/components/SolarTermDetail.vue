@@ -2,7 +2,7 @@
 <template>
     <div class="solar-term-detail">
       <h2>{{ term.name }}</h2>
-      <img :src="getImagePath(term.name)" alt="节气图片" />
+      <img :src="getImagePath(term.name)" alt="节气图片" class="term-image"/>
       <p><strong>日期:</strong> {{ term.date }}</p>
       <p><strong>气候特点:</strong> {{ term.climate }}</p>
       <p><strong>农事活动:</strong> {{ term.agriculture }}</p>
@@ -43,8 +43,6 @@
 <script>
 import {pinyin} from 'pinyin-pro';
 
-
-
 export default {
     props: {
         term: {
@@ -64,25 +62,21 @@ export default {
 }
 </script>
 
+
 <style scoped>
 .solar-term-detail {
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin: 20px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 20px;
 }
 
-.chart {
-    margin-top: 20px;
-}
-
-h2 {
-    color: #333;
-}
-
-p {
-    font-size: 16px;
-    line-height: 1.5;
+.term-image {
+  width: 100%; /* 使图片自适应宽度 */
+  max-width: 600px; /* 限制最大宽度 */
+  height: auto; /* 保持纵横比 */
+  border-radius: 8px; /* 圆角效果 */
+  margin: 20px 0; /* 上下间距 */
 }
 </style>
