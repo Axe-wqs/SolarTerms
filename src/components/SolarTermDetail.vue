@@ -1,22 +1,49 @@
 <!-- src/components/SolarTermDetail.vue -->
 <template>
     <div class="solar-term-detail">
-        <h2>{{ term.name }}</h2>
-        <p><strong>日期:</strong> {{ term.date }}</p>
-        <p><strong>气候特点:</strong> {{ term.climate }}</p>
-        <p><strong>农事活动:</strong> {{ term.agriculture }}</p>
-        <p><strong>传统习俗:</strong> {{ term.customs }}</p>
-        <div class="chart">
-            <canvas ref="temperatureChart" width="400" height="200"></canvas>
+      <h2>{{ term.name }}</h2>
+      <img :src="getImagePath(term.name)" alt="节气图片" />
+      <p><strong>日期:</strong> {{ term.date }}</p>
+      <p><strong>气候特点:</strong> {{ term.climate }}</p>
+      <p><strong>农事活动:</strong> {{ term.agriculture }}</p>
+      <p><strong>传统习俗:</strong> {{ term.customs }}</p>
+  
+      <!-- 新增活动部分 -->
+      <div v-if="term.activities">
+        <h3>相关活动</h3>
+        <div v-if="term.activities.welcomingSpring">
+          <h4>{{ term.activities.welcomingSpring.title }}</h4>
+          <p>{{ term.activities.welcomingSpring.description }}</p>
         </div>
+        <div v-if="term.activities.whipSpringOx">
+          <h4>{{ term.activities.whipSpringOx.title }}</h4>
+          <p>{{ term.activities.whipSpringOx.description }}</p>
+        </div>
+      </div>
+  
+      <!-- 新增养生建议部分 -->
+      <div v-if="term.health">
+        <h3>养生建议</h3>
+        <p><strong>建议:</strong> {{ term.health.tips }}</p>
+        <p><strong>传统医学:</strong> {{ term.health.traditionalMedicine }}</p>
+      </div>
+  
+      <!-- 新增古诗部分 -->
+      <div v-if="term.poetry && term.poetry.length > 0">
+        <h3>相关古诗</h3>
+        <ul>
+          <li v-for="(poem, index) in term.poetry" :key="index">
+            <strong>{{ poem.title }}</strong> - {{ poem.author }}: "{{ poem.content }}"
+          </li>
+        </ul>
+      </div>
     </div>
-</template>
+  </template>
 
 <script>
-import { ref, onMounted } from 'vue';
-import { Chart, registerables } from 'chart.js';
+import {pinyin} from 'pinyin-pro';
 
-Chart.register(...registerables);
+
 
 export default {
     props: {
@@ -25,46 +52,15 @@ export default {
             required: true
         }
     },
-    setup(props) {
-        const temperatureChart = ref(null);
-
-        onMounted(() => {
-            const ctx = temperatureChart.value.getContext('2d');
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-                    datasets: [{
-                        label: '温度变化',
-                        data: props.term.temperatureData, // 使用 term 的温度数据 borderColor: 'rgba(75, 192, 192, 1)',
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        fill: true,
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: '温度 (°C)'
-                            }
-                        },
-                        x: {
-                            title: {
-                                display: true,
-                                text: '月份'
-                            }
-                        }
-                    }
-                }
-            });
-        });
-
-        return {
-            temperatureChart };
-    }
+    methods: {
+        getImagePath(termName) {
+            const pinYin = pinyin(termName, { toneType: 'none' }).toLowerCase().replace(/\s+/g, '');
+            return `/images/solar-terms/${pinYin}.jpg`;
+            // const pinYin = pinyin(termName, { style: pinyin.STYLE_NORMAL }).join('');
+            //return `../../public/images/solar-terms/${pinYin.toLowerCase()}.jpg`;
+            //return `../../public/images/solar-terms/${termName.toLowerCase().replace(/ /g,'-')}.jpg`;
+        },
+    },
 }
 </script>
 
